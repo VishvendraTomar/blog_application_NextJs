@@ -15,9 +15,7 @@ export const PATCH = async (request, { params }) => {
         if (!userId || !Types.ObjectId.isValid(userId)) {
             return new NextResponse("Invalid user ID", { status: 400 });
         }
-
         await connect();
-
         const user = await User.findById(userId);
         if (!user) {
             return new NextResponse("User not found", { status: 404 });
