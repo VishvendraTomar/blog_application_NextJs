@@ -14,6 +14,22 @@ export const GET  = async (request) => {
     const description = searchParams.get("description");
     const limit = searchParams.get("limit");
     const page = searchParams.get("page");
+
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+        return new NextResponse("Invalid user ID", { status: 400 });
+    }
+    await connect();
+    const user = await User.findById(userId);
+    if (!user) {
+        return new NextResponse("User not found", { status: 404 });
+    }
+    if (!categoryId || !Types.ObjectId.isValid(categoryId)) {
+        return new NextResponse("Invalid category ID", { status: 400 });
+    }
+    const category = await Category.findById(categoryId);
+    if (!category) {
+        return new NextResponse("Category not found", { status: 404 });
+    }
     try {
        
     } catch (err) {
