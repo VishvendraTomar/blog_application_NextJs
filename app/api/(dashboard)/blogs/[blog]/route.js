@@ -119,6 +119,7 @@ export const DELETE = async (request, { params }) => {
             return new NextResponse("Invalid user ID", { status: 400 });
         }
 
+        
         await connect();
         const user = await User.findById(userId);
         if (!user) {
