@@ -57,7 +57,9 @@ export const GET = async (request) => {
 
     const skip = (page-1)* limit;
     
-    const blogs = await Blog.find(filter);
+    const blogs = await Blog.find(filter).sort({createdAt:"asc"}).skip(skip).limit(limit);
+
+    
     return new NextResponse(JSON.stringify(blogs), { status: 200 });
   } catch (err) {
     console.error("Error in fetching blogs: ", err);
