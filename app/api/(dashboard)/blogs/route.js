@@ -9,6 +9,12 @@ export const GET = async (request) => {
   const { searchParams } = new URL(request.url);
   const userId = searchParams.get("userId");
   const categoryId = searchParams.get("categoryId");
+  const searchKeyword = searchParams.get("keywords");
+  const startDate = searchParams.get("startDate");
+  const endDate = searchParams.get("endDate");
+  const page = searchParams.get("page"|| "1");
+  const limit = searchParams.get("limit"||"10");
+
 
   try {
     if (!userId || !Types.ObjectId.isValid(userId)) {
@@ -34,6 +40,23 @@ export const GET = async (request) => {
       category: new Types.ObjectId(categoryId),
     };
 
+    if(searchKeyword){
+        filter.$or = [
+            { title: { $regex: searchKeyword, $options: "i" } },
+            { description: { $regex: searchKeyword, $options: "i" } },
+        ]
+    }
+
+    if (startDate && endDate) {
+      filter.createdAt = { $gte: new Date(startDate), $lte: new Date(endDate) };
+    }else if (startDate) {
+      filter.createdAt = { $gte: new Date(startDate) };
+    }else if(endDate){
+      filter.createdAt = { $lte: new Date(endDate) };
+    }
+
+    const skip = (page-1)* limit;
+    
     const blogs = await Blog.find(filter);
     return new NextResponse(JSON.stringify(blogs), { status: 200 });
   } catch (err) {
