@@ -7,7 +7,6 @@ import Category from "@/lib/modals/category";
 
 
 
-// route for getting a single blog 
 export const GET = async (request, { params }) => {
     const { searchParams } = new URL(request.url);
     const userId = searchParams.get("userId");
