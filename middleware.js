@@ -4,8 +4,9 @@ import { logMiddleware } from "./middlewares/api/logMiddleware";
 
 
 export const config = {
-    matcher: ["/api/:path*"],
+    matcher: ["/users/:path*"],
 };
+
 
 export default function middleware(request){
     if(request.url.includes("/api/blogs")){
